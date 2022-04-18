@@ -27,22 +27,23 @@ int Card::getNumValue(){
 }
 
 bool Card::setSuit(char suit){
+  
   switch(suit){
   case 'H':
   case 'h':
-    this->setSuit('H');
+    this->suit = 'H';
     break;
   case 'D':
   case 'd':
-    this->setSuit('D');
+    this->suit = 'D';
     break;
   case 'C':
   case 'c':
-    this->setSuit('C');
+    this->suit = 'C';
     break;
   case 'S':
   case 's':
-    this->setSuit('S');
+    this->suit = 'S';
     break;
   default: //if invalid suit
     return false; 
@@ -87,19 +88,19 @@ bool Card::setVal(int val){
 void Card::print(){
   char suit = this->getSuit();
   char val = this->getValue();
-  cout >> val >> " of ";
+  cout << val << " of ";
   switch(suit){
   case 'H':
-    cout >> "hearts ";
+    cout << "hearts ";
     break;
   case 'D':
-    cout >> "diamonds ";
+    cout << "diamonds ";
     break;
   case 'S':
-    cout >> "spades ";
+    cout << "spades ";
     break;
   case 'C':
-    cout >> "clubs ";
+    cout << "clubs ";
     break;
   }
 }
