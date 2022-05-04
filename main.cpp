@@ -21,4 +21,15 @@ int main(){
   hand1.print();
   cout << "\nHand 2:\n";
   hand2.print();
+
+  //trump card 
+  Card trump = deck.drawCard();
+  char trumpSuit = trump.getSuit();
+  cout << "Trump card:\n";
+  trump.print();
+  cout << endl;
+
+  //determine who goes first
+  int first = Deck::firstPlayer(hand1, hand2, trumpSuit);
+  cout << "First player: " << first << endl;
 }

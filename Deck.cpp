@@ -69,3 +69,40 @@ Deck Deck::drawHand(){
   Deck deck(hand);
   return deck;
 }
+
+int Deck::firstPlayer(Deck hand1, Deck hand2, char suit){
+  //find highest card in hand1
+  vector<Card> cards1 = hand1.getCards();
+  int max1 = -1;
+  for(int i = 0; i < hand1.size; i++){
+    if(cards1[i].getSuit() == suit){
+      if(max1 == -1){ //if max is still undefined
+	max1 = cards1[i].getNumValue();
+      }
+      else{ //there is already a card of that suit, so compare
+	if(cards1[i].getNumValue() > max1)
+	  max1 = cards1[i].getNumValue();
+      }
+    }
+  }
+  //find highest card in hand2
+  vector<Card> cards2 = hand2.getCards();
+  int max2 = -1;
+  for(int i = 0; i < hand2.size; i++){
+    if(cards2[i].getSuit() == suit){
+      if(max2 == -1){ //if max is still undefined
+	max2 = cards2[i].getNumValue();
+      }
+      else{ //there is already a card of that suit, so compare
+	if(cards2[i].getNumValue() > max2)
+	  max2 = cards2[i].getNumValue();
+      }
+    }
+  }
+
+  //return which deck has higher value
+  if(max1 >= max2) //if equal then just give player 1
+    return 1;
+  else
+    return 2;
+}
