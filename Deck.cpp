@@ -101,8 +101,16 @@ int Deck::firstPlayer(Deck hand1, Deck hand2, char suit){
   }
 
   //return which deck has lower value
-  if(min1 <= min2) //if equal then just give player 1
-    return 1;
-  else
-    return 2;
+  if(min1 == -1){ //player 1 has no trump
+    if(min2 == -1) //if neither has a trump card, give to player 1
+      return 1;
+    else //player 2 has a trump card
+      return 2;
+  }
+  else{ //player 1 has trump
+    if(min2 == -1) //player 2 has no trump
+      return 1;
+    else
+      return (min1 < min2) ? 1 : 2;
+  }
 }
