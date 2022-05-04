@@ -121,7 +121,7 @@ int Deck::firstPlayer(Deck hand1, Deck hand2, char suit){
 }
 
 Card Deck::askCard(){
-    //print options
+  //print options
   cout << "Your Hand:\n";
   for(int i = 0; i < size; i++){
     cout << i + 1 << ". ";
@@ -142,8 +142,12 @@ Card Deck::askCard(){
   return c;
 }
 
-Card Deck::askCard(Deck values){
-  //must match value from deck
+Card Deck::askCard(Deck table){
+  vector<Card> tableCards = table.getCards();
+  if(tableCards.size() == 0){
+    return askCard();
+  }
+  //ask for card that has the same value as one on the table
   //print options
   cout << "Your Hand:\n";
   for(int i = 0; i < size; i++){
@@ -153,27 +157,45 @@ Card Deck::askCard(Deck values){
   }
   //get option
   cout << "Choose a card:\n";
+  Card c;
   int n = 0;
-  cin >> n;
-  while(n <= 0 || n > size){
-    cout << "Invalid choice!\nChoose a card:\n";
-    cin >> n;
-  }
   bool valid = false;
   while(!valid){
-    for(int i = 0; i < values.getSize(); i++){
-      if(deck[n-1].getNumValue() == values.getCards()[i].getNumValue()){ //valid card
-	valid = true;
-	break; //break from for loop
-      }
-    }
-    if(!valid){
-      cout << "Must enter a card with a value on the table!\n" << "Choose a card:\n";
+    cin >> n;
+    while(n <= 0 || n > size){
+      cout << "Invalid choice!\nChoose a card:\n";
       cin >> n;
     }
+    c = deck[n - 1];
+    cout << c.getNumValue();
+    cout << endl;
+    for(int i = 0; i < (int)tableCards.size(); i++){
+      if(c.getNumValue() == tableCards[i].getNumValue()) //if valid value
+	valid = true;
+    }
+    if(!valid) //if invalid, prompt again
+      cout << "Card must be a value on the table!\nChoose a card:\n";
   }
-  Card c = deck[n - 1];
+  //successfully got card
   deck.erase(deck.begin() + n - 1);
   size--;
   return c;
+}
+
+bool Deck::checkValue(Deck values){
+  //must match value from deck
+  bool valid = false;
+  for(int i = 0; i < size; i++){
+    for(int j = 0; j < values.getSize(); j++){
+      if(deck[i].getNumValue() == values.getCards()[j].getNumValue()){ //valid card
+	valid = true;
+      }
+    }
+  }
+  return valid;
+}
+
+void Deck::clear(){
+  deck.clear();
+  size = 0;
 }
