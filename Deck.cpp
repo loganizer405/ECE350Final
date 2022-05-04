@@ -29,6 +29,11 @@ Deck::Deck(vector<Card> cards){
   }
 }
 
+Deck::Deck(int num){
+  //empty deck
+  size = num;
+}
+
 Card Deck::drawCard(){
   size--;
   Card c = deck.back();
@@ -130,6 +135,42 @@ Card Deck::askCard(){
   while(n <= 0 || n > size){
     cout << "Invalid choice!\nChoose a card:\n";
     cin >> n;
+  }
+  Card c = deck[n - 1];
+  deck.erase(deck.begin() + n - 1);
+  size--;
+  return c;
+}
+
+Card Deck::askCard(Deck values){
+  //must match value from deck
+  //print options
+  cout << "Your Hand:\n";
+  for(int i = 0; i < size; i++){
+    cout << i + 1 << ". ";
+    deck[i].print();
+    cout << endl;
+  }
+  //get option
+  cout << "Choose a card:\n";
+  int n = 0;
+  cin >> n;
+  while(n <= 0 || n > size){
+    cout << "Invalid choice!\nChoose a card:\n";
+    cin >> n;
+  }
+  bool valid = false;
+  while(!valid){
+    for(int i = 0; i < values.getSize(); i++){
+      if(deck[n-1].getNumValue() == values.getCards()[i].getNumValue()){ //valid card
+	valid = true;
+	break; //break from for loop
+      }
+    }
+    if(!valid){
+      cout << "Must enter a card with a value on the table!\n" << "Choose a card:\n";
+      cin >> n;
+    }
   }
   Card c = deck[n - 1];
   deck.erase(deck.begin() + n - 1);
