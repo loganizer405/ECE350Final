@@ -4,46 +4,49 @@
 using namespace std;
 
 int Card::getNumValue(){
-  int val;
-  char card = this->getValue();
-  switch(card){ //get char representing value
+  int card; //to store numerical value
+
+  switch(val){ //use char representing value
   case 'A':
-    val = 14;
+    card = 14;
     break;
   case 'K':
-    val = 13;
+    card = 13;
     break;
   case 'Q':
-    val = 12;
+    card = 12;
     break;
   case 'J':
-    val = 11;
+    card = 11;
+    break;
+  case '0':
+    card = 10;
     break;
   default: //for any other value, conver the char to int by subtracting 48 from the ASCII code
-    val = (int)card - 48;
+    card = (int)val - 48;
     break;
   }
-  return val;
+  return card;
 }
 
-bool Card::setSuit(char suit){
+bool Card::setSuit(char s){
   
-  switch(suit){
+  switch(s){
   case 'H':
   case 'h':
-    this->suit = 'H';
+    suit = 'H';
     break;
   case 'D':
   case 'd':
-    this->suit = 'D';
+    suit = 'D';
     break;
   case 'C':
   case 'c':
-    this->suit = 'C';
+    suit = 'C';
     break;
   case 'S':
   case 's':
-    this->suit = 'S';
+    suit = 'S';
     break;
   default: //if invalid suit
     return false; 
@@ -51,44 +54,47 @@ bool Card::setSuit(char suit){
   return true; //if successful
 }
 
-bool Card::setVal(char val){
+bool Card::setVal(char value){
   //1 thru 9, normal. ten is represented with 0. face cards A, K, Q, J are 14, 13, 12, 11
   //check for value in bounds
   //...
   //...
-  this->val = val;
+  val = value;
   return true;
 }
 
-bool Card::setVal(int val){
+bool Card::setVal(int value){
   //1 thru 9, normal. ten is represented with 0. face cards A, K, Q, J are 14, 13, 12, 11
-  if(val > 14 || val < 0) //out of range
+  if(value > 14 || value < 0) //out of range
     return false;
-  char value;
-  switch(val){
+  switch(value){
   case 11:
-    value = 'J';
+    val = 'J';
     break;
   case 12:
-    value = 'Q';
+    val = 'Q';
     break;
   case 13:
-    value = 'K';
+    val = 'K';
     break;
   case 14:
-    value = 'A';
+    val = 'A';
     break;
   default: //for other values, store integer as normal
-    value = val;
+    val = value;
   }
-  this->val = val; //set value in class
   return true;
 }
 
 void Card::print(){
-  char suit = this->getSuit();
-  char val = this->getValue();
-  cout << val << " of ";
+  //  char suit = this->getSuit();
+  //  char val = this->getValue();
+  if(val == '0')
+    cout << "10";
+  else
+    cout << val;
+  
+  cout << " of ";
   switch(suit){
   case 'H':
     cout << "hearts ";
