@@ -32,4 +32,16 @@ int main(){
   //determine who goes first
   int first = Deck::firstPlayer(hand1, hand2, trumpSuit);
   cout << "First player: " << first << endl;
+
+  //start
+  Card firstAttack;
+  if(first == 2){ //computer is player 2. if player 2 goes first, choose a non-trump card
+    firstAttack = hand1.drawCard();
+  }
+  else{ //otherwise, ask for card
+    firstAttack = hand2.askCard();
+  }
+  cout << "First attack:\n";
+  firstAttack.print();
+  cout << endl;
 }

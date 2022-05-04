@@ -114,3 +114,25 @@ int Deck::firstPlayer(Deck hand1, Deck hand2, char suit){
       return (min1 < min2) ? 1 : 2;
   }
 }
+
+Card Deck::askCard(){
+    //print options
+  cout << "Your Hand:\n";
+  for(int i = 0; i < size; i++){
+    cout << i + 1 << ". ";
+    deck[i].print();
+    cout << endl;
+  }
+  //get option
+  cout << "Choose a card:\n";
+  int n = 0;
+  cin >> n;
+  while(n <= 0 || n > size){
+    cout << "Invalid choice!\nChoose a card:\n";
+    cin >> n;
+  }
+  Card c = deck[n - 1];
+  deck.erase(deck.begin() + n - 1);
+  size--;
+  return c;
+}

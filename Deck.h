@@ -17,6 +17,7 @@ public:
   void print();
   Deck drawHand();
   static int firstPlayer(Deck hand1, Deck hand2, char suit);
+  Card askCard();
 private:
   vector<Card> deck;
   Card topCard;
