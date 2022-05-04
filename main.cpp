@@ -17,10 +17,12 @@ int main(){
   //draw six cards for each hand
   Deck hand1 = deck.drawHand();
   Deck hand2 = deck.drawHand();
+  /*
   cout << "Hand 1:\n";
   hand1.print();
   cout << "\nHand 2:\n";
   hand2.print();
+  */
 
   //trump card 
   Card trump = deck.drawCard();
@@ -28,10 +30,18 @@ int main(){
   cout << "Trump card:\n";
   trump.print();
   cout << endl << endl;;
-
+  
+  //stack of current cards on the table
+  Deck table(0);
+  
   //determine who goes first
   int first = Deck::firstPlayer(hand1, hand2, trumpSuit);
-  cout << "First player: " << first << endl;
+  first = 1;//temporary for testing only
+  cout << "First Player: ";
+  if(first == 1)
+    cout << "You!\n";
+  else
+    cout << "Computer\n";
 
   //start
   Card firstAttack;
@@ -39,11 +49,13 @@ int main(){
     firstAttack = hand2.drawCard();
   }
   else{ //otherwise, ask for card
+    cout << "Choose a card for first attack.\n";
     firstAttack = hand1.askCard();
   }
   cout << "First attack:\n";
   firstAttack.print();
   cout << endl;
+  table.addCard(firstAttack); //add card to table
 
   //first defense
   Card firstDefense;
@@ -82,15 +94,18 @@ int main(){
  cout << "First Defense:\n";
  firstDefense.print();
  cout << endl;
+ table.addCard(firstDefense); //add to table
+ 
  //next attack
  Card secondAttack;
  if(first == 1){ //player's turn
    cout << "Would you like to attack again?(y/n)\n";
    char c;
    cin >> c;
-   if(c == 'y'){
+   if(c == 'y'){ //attack. needs to be a value already on the table
+     
      cout << "Choose a card to attack with:\n";
-     secondAttack = hand1.askCard();
+     secondAttack = hand1.askCard(table);
    }
    else{ //not attacking
      //computer gets to attack
@@ -99,7 +114,12 @@ int main(){
      
    }
  }
+ else{
+   //computer attacks
+   secondAttack = hand2.drawCard();
+ }
  cout << "Second attack:\n";
  secondAttack.print();
  cout << endl;
+ table.addCard(secondAttack);
 }
