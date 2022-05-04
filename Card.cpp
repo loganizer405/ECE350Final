@@ -68,6 +68,9 @@ bool Card::setVal(int value){
   if(value > 14 || value < 0) //out of range
     return false;
   switch(value){
+  case 10:
+    val = '0';
+    break;
   case 11:
     val = 'J';
     break;
@@ -80,8 +83,8 @@ bool Card::setVal(int value){
   case 14:
     val = 'A';
     break;
-  default: //for other values, store integer as normal
-    val = value;
+  default: //for other values, store integer as normal. use ASCII offset
+    val = value + 48;
   }
   return true;
 }
