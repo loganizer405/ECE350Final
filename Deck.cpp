@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <random>
 #include <algorithm>
@@ -185,6 +186,52 @@ Card Deck::askCard(Deck table){
     }
     if(!valid) //if invalid, prompt again
       cout << "Card must be a value on the table!\nChoose a card:\n";
+  }
+  //successfully got card. remove and return
+  this->removeCard(c);
+  return c;
+}
+
+Card Deck::askCard(Card card, char trump){
+  Card c;
+  //first, check if there are no winning cards
+  bool win = false;
+  for(int i = 0; i < size; i++){
+    if(deck[i].getSuit() == trump && card.getSuit() != trump) //trump wins
+      win = true;
+    if(deck[i].getSuit() == card.getSuit() && deck[i].getNumValue() > card.getNumValue()) //higher card wins
+      win = true;
+  }
+  if(!win) //if no winning cards, return empty card
+    return c;
+  //print options
+  cout << "Your Hand:\n";
+  for(int i = 0; i < size; i++){
+    cout << i + 1 << ". ";
+    deck[i].print();
+    cout << endl;
+  }
+  //get option
+  cout << "Choose a card:\n";
+  int n = 0;
+  bool valid = false;
+  while(!valid){
+    cin >> n;
+    while(n <= 0 || n > size){
+      cout << "Invalid choice!\nChoose a card:\n";
+      cin >> n;
+    }
+    c = deck[n - 1]; //select card
+    //check to see if it beats the card
+    if(c.getSuit() == trump && card.getSuit() != trump) //trump wins
+      valid = true;
+    if(c.getSuit() == card.getSuit() && c.getNumValue() > card.getNumValue()) //higher card wins
+      valid = true;
+    if(!valid){ //if invalid, prompt again
+      cout << "Card must beat the ";
+      card.print();
+      cout << "!\nChoose a card:\n";
+    }
   }
   //successfully got card. remove and return
   this->removeCard(c);

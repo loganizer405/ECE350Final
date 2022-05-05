@@ -19,8 +19,9 @@ public:
   void print();
   Deck drawHand();
   static int firstPlayer(Deck hand1, Deck hand2, char suit);
-  Card askCard();
-  Card askCard(Deck table);
+  Card askCard(); //asks for any card
+  Card askCard(Deck table); //asks for card that matches any value on the table
+  Card askCard(Card card, char trump); //asks for card that beats the card
   bool checkValue(Deck values);
   void clear();
   Card findHigh(char suit);

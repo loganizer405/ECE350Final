@@ -41,7 +41,7 @@ int main(){
   
   //determine who goes first
   int first = Deck::firstPlayer(hand1, hand2, trumpSuit);
-  first = 1;//temporary for testing only
+  first = 2;//temporary for testing only
   cout << "First Player: ";
   if(first == 1)
     cout << "You!\n";
@@ -63,33 +63,12 @@ int main(){
   //first defense
   Card firstDefense;
   if(first == 2){ //first player was computer. ask user for card
-    cout << "Choose a card to defend!\n";
-    firstDefense = hand1.askCard();
+    firstDefense = defend(firstAttack, hand1, 1);
   }
   else{ //computer. choose card of same suit
-    vector<Card> cards2 = hand2.getCards();
-    Card max;
-    for(int i = 0; i < hand2.getSize(); i++){
-      if(cards2[i].getSuit() == firstAttack.getSuit()){
-	if(max.getSuit() == 'X') //if max is still undefined
-	  max = cards2[i];
-	else{ //there is already a card of that suit, so compare
-	  if(cards2[i].getNumValue() > max.getNumValue())
-	    max = cards2[i];
-	}
-      }
-    }
-    if(max.getSuit() == 'X'){ //if a card has not been found
-      //choose trump card
-      for(int i = 0; i < hand2.getSize(); i++){
-	if(cards2[i].getSuit() == trumpSuit){ //found trump
-	  firstDefense = cards2[i];
-	  break;
-	}
-      }
-    }
-    else if(max.getSuit() != 'X') //if the card was already found
-      firstDefense = max;
+    firstDefense = defend(firstAttack, hand2, 2);
+
+    /*
     else{ //if a card has not been found, there are no valid plays. pick up cards
       for(int i = 0; i < table.getSize(); i++){
 	hand2.addCard(table.getCards()[i]);
@@ -97,12 +76,19 @@ int main(){
       //remove cards from table
       table.clear();
     }
-      
+    */
   }
- cout << "First Defense:\n";
- firstDefense.print();
- cout << endl;
- table.addCard(firstDefense); //add to table
+  if(firstDefense.getValue() == 'X'){
+    cout << "failed to defend!!\n";
+    //          cout << "\ndeck:\n";
+    //          hand1.print();
+  } 
+  else{
+    cout << "First Defense:\n";
+    firstDefense.print();
+    cout << endl;
+    table.addCard(firstDefense); //add to table
+  }
  
  //next attack
  Card secondAttack;
@@ -174,9 +160,30 @@ Card attack(Deck table, Deck &hand, int player){
 
 Card defend(Card attack, Deck &hand, int player){
   if(player == 1){ //if player, ask for card
-    
+    cout << "Choose a card to defend with!\n";
+    return hand.askCard(attack, trumpSuit);
   }
   else{ //computer
+    Card c;
+    vector<Card> cards = hand.getCards();
+    //first, try beating card with suit
+    for(int i = 0; i < (int)cards.size(); i++){
+      if(cards[i].getSuit() == attack.getSuit() && cards[i].getNumValue() > attack.getNumValue()){ //if same suit, and greater value
+	//remove from deck and return.
+	c = cards[i];
+	hand.removeCard(c);
+      }
+    }
+    //second, try playing trump, assuming the card given is not trump
+    if(attack.getSuit() != trumpSuit){
+      for(int i = 0; i < (int)cards.size(); i++){
+	if(cards[i].getNumValue() > attack.getNumValue()){ //winning card. remove from deck and return.
+	  c = cards[i];
+	  hand.removeCard(c);
+	}
+      }
+    }
+    return c;
 
   }
 }
