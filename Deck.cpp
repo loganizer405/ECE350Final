@@ -36,8 +36,11 @@ Deck::Deck(int num){
 }
 
 Card Deck::drawCard(){
+  Card c;
+  if(size == 0)
+    return c;
   size--;
-  Card c = deck.back();
+  c = deck.back();
   deck.pop_back();
   return c;
 }
@@ -285,4 +288,14 @@ void Deck::pickUp(Deck &table){
     this->addCard(table.getCards()[i]);
   }
   table.clear();
+}
+
+bool Deck::replenish(Deck &deck){
+  for(int i = size; i < 6; i++){
+    Card c = deck.drawCard();
+    if(c.getSuit() == 'X') //if no more cards, return false
+      return false;
+    this->addCard(c); //otherwise, add card
+  }
+  return true;
 }

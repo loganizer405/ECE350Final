@@ -27,6 +27,7 @@ public:
   Card findHigh(char suit);
   Card findHigh();
   void pickUp(Deck &table);
+  bool replenish(Deck &deck); //replenish up to six cards. returns false if there are not enough cards
 private:
   vector<Card> deck;
   Card topCard;

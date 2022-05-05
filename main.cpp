@@ -39,83 +39,81 @@ int main(){
   //stack of current cards on the table
   Deck table(0);
   
-  //determine who goes first
-  int first = Deck::firstPlayer(hand1, hand2, trumpSuit);
-  first = 2;//temporary for testing only
+  //determine who goes first. player is player 1, computer is player 2
+  int player = Deck::firstPlayer(hand1, hand2, trumpSuit);
+  player = 1;//temporary for testing only
   cout << "First Player: ";
-  if(first == 1)
+  if(player == 1)
     cout << "You!\n";
   else
     cout << "Computer\n";
 
   //start
   Card firstAttack;
-  if(first == 2) //computer is player 2. if player 2 goes first, choose a non-trump card
-    firstAttack = attack(table, hand2, 2);
-  else //otherwise, player goes.
+  if(player == 2) //choose card
     firstAttack = attack(table, hand1, 1);
+  else //otherwise, computer goes.
+    firstAttack = attack(table, hand2, 2);
 
   cout << "First attack:\n";
   firstAttack.print();
   cout << endl;
   table.addCard(firstAttack); //add card to table
+  player = (player == 1) ? 2 : 1; //flip player
 
   //first defense
   Card firstDefense;
-  if(first == 2) //first player was computer. ask user for card
+  if(player == 1) //if player, ask for card
     firstDefense = defend(firstAttack, hand1, 1);
   else //computer. choose card of same suit
     firstDefense = defend(firstAttack, hand2, 2);
-
-    /*
-    else{ //if a card has not been found, there are no valid plays. pick up cards
-      for(int i = 0; i < table.getSize(); i++){
-	hand2.addCard(table.getCards()[i]);
-      }
-      //remove cards from table
-      table.clear();
-    }
-    */
   
   if(firstDefense.getValue() == 'X'){ //no valid cards. pick up
     cout << "failed to defend!!\n";
 
-    if(first == 2) //player
+    if(player == 1) //player
       hand1.pickUp(table);
     else
       hand2.pickUp(table);
-
-    //          cout << "\ndeck:\n";
-    //          hand1.print();
   } 
-  else{
+  else{ //defense successful
     cout << "First Defense:\n";
     firstDefense.print();
     cout << endl;
     table.addCard(firstDefense); //add to table
+    player = (player == 1) ? 2 : 1; //flip player
   }
+  //attacking continues. or, call off attack and draw up to six.
+  if(player == 2){
+    cout << "would you like to continue the attack?\n";
+    hand1.replenish(deck);
+    cout << "new hand: \n";
+    hand1.print();
+    //draw hands to six
+    // for(int i = hand1.getSize() - 1; i < 6; i++)
+    //      hand1.addCard(deck.drawCard());
+    //    for(int i = hand2.getSize() - 1; i < 6; i++)
+    //      hand2.addCard(deck.drawCard());
+  }
+
  
  //next attack
  Card secondAttack;
- if(first == 1){ //player's turn
+ if(player == 1){ //player's turn
    if(!hand1.checkValue(table)){
      cout << "You have no valid cards for an attack.\n";
-     //pick up cards
+     hand1.pickUp(table);//pick up cards
    }
    else{
      cout << "Would you like to attack again?(y/n)\n";
      char c;
      cin >> c;
 
-     if(c == 'y'){ //attack. needs to be a value already on the table
-       secondAttack = hand1.askCard(table);
-     }
-     else{ //not attacking
-       //computer gets to attack
-       //choose next card
-       //secondAttack = hand2.drawCard();
+     if(c == 'y') //attack
+       secondAttack = attack(table, hand1, 1);
+
+     else //not attacking. computer gets to attack
        secondAttack = attack(table, hand2, 2);
-     }
    }
  }
  cout << "Second attack:\n";
@@ -128,7 +126,7 @@ Card attack(Deck table, Deck &hand, int player){
   Card c;
 
   if(player == 1){ //player
-    cout << "Choose a card for first attack.\n";
+    cout << "Choose a card for attack.\n";
     if(table.getSize() == 0) //if there are no cards on the table, any card is valid. (first play)
       c = hand.askCard();
     else //there are cards on the table. must be a value already on the table
