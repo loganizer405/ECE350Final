@@ -277,3 +277,12 @@ Card Deck::findHigh(){
   }
   return max;
 }
+
+void Deck::pickUp(Deck &table){
+  //add all cards to deck
+  //  vector<Card> cards = table.getCards();
+  for(int i = 0; i < (int)table.getSize(); i++){
+    this->addCard(table.getCards()[i]);
+  }
+  table.clear();
+}

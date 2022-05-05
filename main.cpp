@@ -62,10 +62,9 @@ int main(){
 
   //first defense
   Card firstDefense;
-  if(first == 2){ //first player was computer. ask user for card
+  if(first == 2) //first player was computer. ask user for card
     firstDefense = defend(firstAttack, hand1, 1);
-  }
-  else{ //computer. choose card of same suit
+  else //computer. choose card of same suit
     firstDefense = defend(firstAttack, hand2, 2);
 
     /*
@@ -77,9 +76,15 @@ int main(){
       table.clear();
     }
     */
-  }
-  if(firstDefense.getValue() == 'X'){
+  
+  if(firstDefense.getValue() == 'X'){ //no valid cards. pick up
     cout << "failed to defend!!\n";
+
+    if(first == 2) //player
+      hand1.pickUp(table);
+    else
+      hand2.pickUp(table);
+
     //          cout << "\ndeck:\n";
     //          hand1.print();
   } 

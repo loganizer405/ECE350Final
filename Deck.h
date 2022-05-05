@@ -26,6 +26,7 @@ public:
   void clear();
   Card findHigh(char suit);
   Card findHigh();
+  void pickUp(Deck &table);
 private:
   vector<Card> deck;
   Card topCard;
