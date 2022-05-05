@@ -46,6 +46,18 @@ void Deck::addCard(Card c){
   size++;
 }
 
+void Deck::removeCard(Card c){
+  //  Card c = deck[n - 1];
+  //find index
+  for(int i = 0; i < size; i++){
+    if(deck[i].getNumValue() == c.getNumValue() && deck[i].getSuit() == c.getSuit()){ //match
+      deck.erase(deck.begin() + i); //remove from Deck and decrement
+      size--;
+      return;
+    }
+  }
+}
+
 void Deck::shuffleCards(){
   //using functions from Algorithm and Random libraries to shuffle vector
   //from https://www.delftstack.com/howto/cpp/shuffle-vector-cpp/
@@ -136,9 +148,9 @@ Card Deck::askCard(){
     cout << "Invalid choice!\nChoose a card:\n";
     cin >> n;
   }
+  //remove card and return
   Card c = deck[n - 1];
-  deck.erase(deck.begin() + n - 1);
-  size--;
+  this->removeCard(c);
   return c;
 }
 
@@ -176,9 +188,8 @@ Card Deck::askCard(Deck table){
     if(!valid) //if invalid, prompt again
       cout << "Card must be a value on the table!\nChoose a card:\n";
   }
-  //successfully got card
-  deck.erase(deck.begin() + n - 1);
-  size--;
+  //successfully got card. remove and return
+  this->removeCard(c);
   return c;
 }
 

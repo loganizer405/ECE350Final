@@ -13,6 +13,7 @@ public:
   int getSize(){ return size; }
   Card drawCard();
   void addCard(Card c);
+  void removeCard(Card c);
   vector<Card> getCards(){ return deck; };
   void shuffleCards();
   void print();
@@ -22,6 +23,7 @@ public:
   Card askCard(Deck table);
   bool checkValue(Deck values);
   void clear();
+  Card findHigh(char suit);
 private:
   vector<Card> deck;
   Card topCard;
