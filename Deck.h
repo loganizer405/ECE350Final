@@ -24,6 +24,7 @@ public:
   bool checkValue(Deck values);
   void clear();
   Card findHigh(char suit);
+  Card findHigh();
 private:
   vector<Card> deck;
   Card topCard;

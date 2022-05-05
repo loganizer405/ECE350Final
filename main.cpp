@@ -8,6 +8,7 @@ using namespace std;
 char trumpSuit;
 
 Card attack(Deck table, Deck &hand, int player);
+Card defend(Card attack, Deck &hand, int player);
 
 int main(){
   //two hands of six cards
@@ -145,24 +146,8 @@ Card attack(Deck table, Deck &hand, int player){
   else{ //computer
     vector<Card> cards = hand.getCards();
     if(table.getSize() == 0){
-      //choose highest non-trump card
-      Card max;
-      for(int i = 0; i < (int)cards.size(); i++){
-	if(cards[i].getSuit() != trumpSuit){ //found not trump
-	  if(max.getSuit() == 'X') //if max is still undefined
-	    max = cards[i];
-	  else{
-	    if(cards[i].getNumValue() > max.getNumValue())
-	      max = cards[i];
-	  }
-	}
-      }
-      if(max.getSuit() != 'X'){ //if we have a valid card, return
-	c = max;
-      }
-      else{ //no non-trump card. pick next card
-	c = hand.drawCard();
-      }
+      //choose highest card
+      c = hand.findHigh();
     }
     else{ //if there are cards on the table, it must be valid
       vector<Card> tableCards = table.getCards();
@@ -185,4 +170,13 @@ Card attack(Deck table, Deck &hand, int player){
     }
   }
   return c;
+}
+
+Card defend(Card attack, Deck &hand, int player){
+  if(player == 1){ //if player, ask for card
+    
+  }
+  else{ //computer
+
+  }
 }

@@ -179,8 +179,6 @@ Card Deck::askCard(Deck table){
       cin >> n;
     }
     c = deck[n - 1];
-    cout << c.getNumValue();
-    cout << endl;
     for(int i = 0; i < (int)tableCards.size(); i++){
       if(c.getNumValue() == tableCards[i].getNumValue()) //if valid value
 	valid = true;
@@ -209,4 +207,26 @@ bool Deck::checkValue(Deck values){
 void Deck::clear(){
   deck.clear();
   size = 0;
+}
+
+Card Deck::findHigh(char suit){
+  Card max;
+  for(int i = 0; i < size; i++){
+    if(deck[i].getSuit() == suit){ //found
+      //if max is undefined, or new card is greater than, reassign.
+      if(max.getSuit() == 'X' || deck[i].getNumValue() > max.getNumValue())
+	max = deck[i];
+    }
+  }
+  return max;
+}
+
+Card Deck::findHigh(){
+  Card max;
+  for(int i = 0; i < size; i++){
+    //if max is undefined, or new card is greater than, reassign.
+    if(max.getSuit() == 'X' || deck[i].getNumValue() > max.getNumValue())
+      max = deck[i];
+  }
+  return max;
 }
