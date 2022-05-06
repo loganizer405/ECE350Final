@@ -37,7 +37,7 @@ Deck::Deck(int num){
 
 Card Deck::drawCard(){
   Card c;
-  if(size == 0)
+  if(size <= 0) //if deck is empty
     return c;
   size--;
   c = deck.back();
@@ -268,6 +268,8 @@ Card Deck::findHigh(char suit){
 	max = deck[i];
     }
   }
+  if(max.getSuit() == 'X' && size != 0)
+    max = deck[0];
   return max;
 }
 
@@ -278,6 +280,8 @@ Card Deck::findHigh(){
     if(max.getSuit() == 'X' || deck[i].getNumValue() > max.getNumValue())
       max = deck[i];
   }
+  if(max.getSuit() == 'X' && size != 0)
+    max = deck[0];
   return max;
 }
 
@@ -293,8 +297,10 @@ void Deck::pickUp(Deck &table){
 bool Deck::replenish(Deck &deck){
   for(int i = size; i < 6; i++){
     Card c = deck.drawCard();
-    if(c.getSuit() == 'X') //if no more cards, return false
+
+    if(c.getSuit() != 'H' && c.getSuit() != 'D' && c.getSuit() != 'C' && c.getSuit() != 'S'){ //if no more cards, return false
       return false;
+    }
     this->addCard(c); //otherwise, add card
   }
   return true;
